@@ -9,18 +9,15 @@ class Check:
     secret_numbers = [1, 2, 3, 4]
 
     def one_check(self, numbers_str):
-        try:
-            numbers = [int(s) for s in numbers_str]
-            if len(numbers) != 4:
-                return "You should enter 4 numbers"
-            if len(numbers) != len(set(numbers)):
-                return "Numbers should be unique"
-            for i in numbers:
-                if i < 0 or i > 10:
-                    return "Numbers should be in range 1 to 9"
-            self.numbers = numbers
-        except ValueError:
-            return "The value should be integers"
+        numbers = [int(s) for s in numbers_str]
+        if len(numbers) != 4:
+            return "You must enter 4 digits"
+        if len(numbers) != len(set(numbers)):
+            return "Numbers should be unique"
+        for i in numbers:
+            if i < 0 or i > 10:
+                return "Numbers should be in range 1 to 9"
+        self.numbers = numbers
 
     def guess_numbers(self):
         bulls = 0
@@ -42,13 +39,17 @@ def bullscows_view(request):
     if request.method == "GET":
         return render(request, 'bullscows_view.html')
     else:
-        numbers = list(map(int, request.POST.get('numbers').split()))
-        check = Check()
-        if check.one_check(numbers):
-            one_check = check.one_check()
-            context = {'run': one_check}
-            return render(request, 'bullscows_view.html', context)
-        else:
-            second_check = check.guess_numbers()
-            context = {'run': second_check}
+        try:
+            numbers = list(map(int, request.POST.get('numbers').split()))
+            check = Check()
+            if check.one_check(numbers):
+                one_check = check.one_check(numbers)
+                context = {'run': one_check}
+                return render(request, 'bullscows_view.html', context)
+            else:
+                second_check = check.guess_numbers()
+                context = {'run': second_check}
+                return render(request, 'bullscows_view.html', context)
+        except ValueError:
+            context = {'run': "You should enter only digits"}
             return render(request, 'bullscows_view.html', context)
