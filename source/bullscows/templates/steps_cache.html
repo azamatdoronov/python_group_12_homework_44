@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% for i in numbers_cache  %}
+    <h4>The numbers you entered:</h4>{{ i }}
+    <br>
+    <h4>Number of Step:</h4>{{ forloop.counter }}
+    <br>
+{% endfor %}
+</body>
+</html>

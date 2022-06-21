@@ -1,5 +1,9 @@
 from django.shortcuts import render
 
+numbers_cache = []
+steps_cache = []
+step = {'step': 0}
+
 
 class Check:
 
@@ -48,8 +52,19 @@ def bullscows_view(request):
                 return render(request, 'bullscows_view.html', context)
             else:
                 second_check = check.guess_numbers()
+                numbers = list(numbers)
+                numbers_cache.append(numbers)
+                step['step'] += 1
+                steps_cache.append(step['step'])
                 context = {'run': second_check}
                 return render(request, 'bullscows_view.html', context)
         except ValueError:
             context = {'run': "You should enter only digits"}
             return render(request, 'bullscows_view.html', context)
+
+
+def steps_cache_view(request):
+    context = {'step': steps_cache,
+               'numbers_cache': numbers_cache
+               }
+    return render(request, 'steps_cache.html', context)
