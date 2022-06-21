@@ -21,3 +21,18 @@ class Check:
             self.numbers = numbers
         except:
             return " The value should be integers"
+
+    def guess_numbers(self):
+        bulls = 0
+        cows = 0
+        for i in range(len(self.numbers)):
+            if self.numbers[i] == self.secret_numbers[i]:
+                bulls += 1
+            elif self.numbers[i] in self.secret_numbers:
+                cows += 1
+        if bulls == 4:
+            return "Winner!"
+        elif bulls or cows:
+            return f"You got {bulls} bulls and {cows} cows"
+        else:
+            return "No identical numbers"
