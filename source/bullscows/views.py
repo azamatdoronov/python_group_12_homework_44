@@ -36,3 +36,22 @@ class Check:
             return f"You got {bulls} bulls and {cows} cows"
         else:
             return "No identical numbers"
+
+
+def bullscows_view(request):
+    if request.method == "GET":
+        return render(request, 'bullscows_form.html')
+    else:
+        if Check.one_check():
+            first_check = Check.one_check()
+            first_check = request.POST.get("first_check")
+
+        else:
+            result = Check.guess_numbers()
+            result = request.POST.get("result")
+
+        context = {
+            first_check: request.POST.get("first_check"),
+            result: request.POST.get("result"),
+        }
+        return render(request, "bullscows_view.html", context)
